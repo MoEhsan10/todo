@@ -17,6 +17,9 @@ class AppTheme{
       backgroundColor: ColorsManager.blue,
       foregroundColor: ColorsManager.white,
       shape: CircleBorder(side: BorderSide(width: 4,color: ColorsManager.white)),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(backgroundColor: ColorsManager.blue,)
     )
   );
 

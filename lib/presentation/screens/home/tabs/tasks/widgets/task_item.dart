@@ -42,6 +42,7 @@ class TaskItem extends StatelessWidget {
             ),
             child: Icon(Icons.check,color: ColorsManager.white,size: 32.sp,),
           ),
+
         ],
       ),
     );
