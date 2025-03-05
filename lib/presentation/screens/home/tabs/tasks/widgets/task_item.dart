@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
+import 'package:todo_app_v2/models/task_model.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({super.key});
+   TaskItem({super.key, required this.task});
+
+  TaskModel task;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +29,9 @@ class TaskItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Play basket ball',style: ApplightStyle.taskStyle,),
+              Text(task.title,style: ApplightStyle.taskStyle,),
               SizedBox(height: 4.h,),
-              Text('i will play fc24',style: ApplightStyle.taskDescriptionStyle,),
+              Text(task.description,style: ApplightStyle.taskDescriptionStyle,),
 
             ],
           ),

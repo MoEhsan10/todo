@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
+import 'package:todo_app_v2/models/task_model.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_elevated_button.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_textFormField.dart';
 
@@ -15,7 +16,7 @@ class TaskBottomSheet extends StatefulWidget {
 
 class _TaskBottomSheetState extends State<TaskBottomSheet> {
   TextEditingController titleController =TextEditingController();
-  TextEditingController description =TextEditingController();
+  TextEditingController descriptionController =TextEditingController();
   DateFormat dateFormat = DateFormat('dd/MM/yyyy');
   DateTime selectedDate= DateTime.now();
   var formKey=GlobalKey<FormState>();
@@ -43,7 +44,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                     },
               ),
               DefaultTextFormField(
-                  controller: description,
+                  controller: descriptionController,
                   hintText: 'Enter task description',
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -84,6 +85,10 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   }
 
   void addTask(){
-    print('add task caled');
+    TaskModel task = TaskModel(
+        title: titleController.text,
+        description: descriptionController.text,
+        date: selectedDate,
+    );
   }
 }

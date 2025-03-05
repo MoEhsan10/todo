@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
+import 'package:todo_app_v2/models/task_model.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/widgets/task_item.dart';
 
 class TasksTab extends StatelessWidget {
@@ -10,13 +11,21 @@ class TasksTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHight = MediaQuery.sizeOf(context).height;
+    double screenHeight = MediaQuery.sizeOf(context).height;
+    List<TaskModel> tasks = List.generate(10,
+          (index) => TaskModel(
+              title: 'title $index' ,
+              description: 'description $index',
+              date: DateTime.now(),
+          ),
+    );
+
     return Column(
       children: [
         Stack(
           children: [
             Container(
-              height: screenHight*0.19,
+              height: screenHeight*0.19,
               width: double.infinity,
               color: ColorsManager.blue,
             ),
@@ -26,7 +35,7 @@ class TasksTab extends StatelessWidget {
                 child: Text('To DO List',style: ApplightStyle.appBarTextStyle,)
             ),
             Padding(
-              padding: REdgeInsets.only(top: screenHight*0.14),
+              padding: REdgeInsets.only(top: screenHeight*0.14),
               child: EasyInfiniteDateTimeLine(
                 firstDate: DateTime.now().subtract(Duration(days: 365)),
                 focusDate: DateTime.now(),
@@ -63,7 +72,7 @@ class TasksTab extends StatelessWidget {
         ),
         Expanded(child: ListView.builder(
           padding: REdgeInsets.only(top: 20),
-          itemBuilder: (context, index) => TaskItem(),itemCount: 5,))
+          itemBuilder: (context, index) => TaskItem(task:tasks[index],),itemCount: tasks.length,))
 
       ],
     );
