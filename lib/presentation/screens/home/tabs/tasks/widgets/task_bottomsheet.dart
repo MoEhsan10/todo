@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
+import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
 import 'package:todo_app_v2/models/task_model.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_elevated_button.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_textFormField.dart';
@@ -90,5 +92,13 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
         description: descriptionController.text,
         date: selectedDate,
     );
+    FirebaseFunction.addTaskToFireStore(task)
+        .timeout(Duration(microseconds: 100)
+          ,onTimeout: () {
+          Navigator.pop(context);
+    },)
+        .catchError((error){
+
+    });
   }
 }
