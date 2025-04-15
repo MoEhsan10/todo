@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:todo_app_v2/models/task_model.dart';
 
 class FirebaseFunction {
@@ -21,5 +20,10 @@ class FirebaseFunction {
     CollectionReference<TaskModel> taskCollection = getTasksCollection();
      QuerySnapshot<TaskModel> querySnapshot = await taskCollection.get();
      return  querySnapshot.docs.map((docSnapShot) => docSnapShot.data(),).toList();
+  }
+
+  static Future<void> deleteTaskFromFireStore(String taskId)async {
+    CollectionReference<TaskModel> taskCollection = getTasksCollection();
+   return taskCollection.doc(taskId).delete();
   }
 }

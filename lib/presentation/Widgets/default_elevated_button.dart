@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
-import 'package:todo_app_v2/my_app.dart';
 
 class DefaultElevatedButton extends StatelessWidget {
   DefaultElevatedButton(
