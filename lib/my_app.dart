@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app_v2/config/theme/app_theme.dart';
+import 'package:todo_app_v2/presentation/screens/auth/login_screen.dart';
+import 'package:todo_app_v2/presentation/screens/auth/register_screen.dart';
 import 'package:todo_app_v2/presentation/screens/home/home_screen.dart';
 
 class MyApp extends StatelessWidget {
@@ -15,6 +17,8 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         routes: {
           HomeScreen.routeName : (_) =>HomeScreen(),
+          LoginScreen.routeName : (_) =>LoginScreen(),
+          RegisterScreen.routeName : (_) =>RegisterScreen(),
         },
         initialRoute: HomeScreen.routeName,
         theme: AppTheme.light,
