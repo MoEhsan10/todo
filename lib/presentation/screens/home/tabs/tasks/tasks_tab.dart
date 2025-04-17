@@ -4,8 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
+import 'package:todo_app_v2/presentation/screens/auth/user_provider.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/widgets/task_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 
 class TasksTab extends StatefulWidget {
   const TasksTab({super.key});
@@ -21,8 +25,9 @@ class _TasksTabState extends State<TasksTab> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.sizeOf(context).height;
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
+    String userId =Provider.of<UserProvider>(context,listen: false).currentUser!.id;
    if(shouldGetTasks){
-     tasksProvider.getTasks();
+     tasksProvider.getTasks(userId);
     shouldGetTasks=false;
    }
    return Column(
@@ -37,7 +42,8 @@ class _TasksTabState extends State<TasksTab> {
             Positioned(
                 top: 45.sp,
                 left: 20.sp,
-                child: Text('To DO List',style: ApplightStyle.appBarTextStyle,)
+                child: Text(AppLocalizations.of(context)!.todoList,
+                  style: ApplightStyle.appBarTextStyle,)
             ),
             Padding(
               padding: REdgeInsets.only(top: screenHeight*0.14),
@@ -45,7 +51,7 @@ class _TasksTabState extends State<TasksTab> {
                 firstDate: DateTime.now().subtract(Duration(days: 365)),
                 focusDate: tasksProvider.selectedDate,
                 lastDate: DateTime.now().add(Duration(days: 365)),
-                onDateChange: (selectedDate) => tasksProvider.getSelectedDateTask(selectedDate),
+                onDateChange: (selectedDate) => tasksProvider.getSelectedDateTask(selectedDate,userId),
                 showTimelineHeader: false,
                 dayProps: EasyDayProps(
                     height: 79.h,

@@ -11,6 +11,8 @@ import 'package:todo_app_v2/presentation/Widgets/default_elevated_button.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_textFormField.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
 
+import '../../../../auth/user_provider.dart';
+
 class TaskBottomSheet extends StatefulWidget {
   const TaskBottomSheet({super.key});
 
@@ -27,6 +29,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
@@ -96,16 +99,16 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   }
 
   void addTask(){
+    String userId =Provider.of<UserProvider>(context,listen: false).currentUser!.id;
     TaskModel task = TaskModel(
         title: titleController.text,
         description: descriptionController.text,
         date: selectedDate,
     );
-    FirebaseFunction.addTaskToFireStore(task)
-        .timeout(Duration(microseconds: 100)
-          ,onTimeout: () {
+    FirebaseFunction.addTaskToFireStore(task,userId)
+        .then((_){
           Navigator.pop(context);
-          Provider.of<TasksProvider>(context,listen: false).getTasks();
+          Provider.of<TasksProvider>(context,listen: false).getTasks(userId);
           Fluttertoast.showToast(
               msg: "Task added successfully",
               toastLength: Toast.LENGTH_LONG,
@@ -118,7 +121,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                 msg: "Something went wrong",
                 toastLength: Toast.LENGTH_LONG,
                 timeInSecForIosWeb: 5,
-                backgroundColor: ColorsManager.blue,
+                backgroundColor: ColorsManager.red,
                 textColor: Colors.white,
                 fontSize: 16.0
             );

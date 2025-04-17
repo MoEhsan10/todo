@@ -6,8 +6,8 @@ class TasksProvider extends ChangeNotifier {
   List<TaskModel> tasks = [];
   DateTime selectedDate = DateTime.now();
 
-  Future<void> getTasks() async {
-    List<TaskModel> allTasks = await FirebaseFunction.getTasksFromFireStore();
+  Future<void> getTasks(String userId) async {
+    List<TaskModel> allTasks = await FirebaseFunction.getTasksFromFireStore(userId);
     tasks = allTasks.where(
             (task) =>
             task.date.year == selectedDate.year &&
@@ -17,8 +17,12 @@ class TasksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getSelectedDateTask(DateTime date) {
+  void getSelectedDateTask(DateTime date,String userId) {
     selectedDate = date;
-    getTasks();
+    getTasks(userId);
+  }
+  void resetData(){
+    tasks =[];
+    selectedDate =DateTime.now();
   }
 }
