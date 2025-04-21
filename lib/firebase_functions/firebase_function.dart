@@ -71,5 +71,5 @@ class FirebaseFunction {
   }
 
  static Future<void> logout() => FirebaseAuth.instance.signOut();
-
+//
 }
