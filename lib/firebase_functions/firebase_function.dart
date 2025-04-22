@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:todo_app_v2/models/task_model.dart';
 
 import '../models/user_model.dart';
@@ -72,4 +74,10 @@ class FirebaseFunction {
 
  static Future<void> logout() => FirebaseAuth.instance.signOut();
 //
+
+  static Future<void> deleteTaskFromFireStore(String taskId)async {
+    CollectionReference<TaskModel> taskCollection = getTasksCollection();
+   return taskCollection.doc(taskId).delete();
+  }
+
 }

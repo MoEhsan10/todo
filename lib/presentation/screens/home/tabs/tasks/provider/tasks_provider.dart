@@ -9,20 +9,21 @@ class TasksProvider extends ChangeNotifier {
   Future<void> getTasks(String userId) async {
     List<TaskModel> allTasks = await FirebaseFunction.getTasksFromFireStore(userId);
     tasks = allTasks.where(
-            (task) =>
-            task.date.year == selectedDate.year &&
-            task.date.month == selectedDate.month &&
-            task.date.day == selectedDate.day
+      (task) =>
+          task.date.year == selectedDate.year &&
+          task.date.month == selectedDate.month &&
+          task.date.day == selectedDate.day,
     ).toList();
     notifyListeners();
   }
 
-  void getSelectedDateTask(DateTime date,String userId) {
+  void getSelectedDateTask(DateTime date, String userId) {
     selectedDate = date;
     getTasks(userId);
   }
-  void resetData(){
-    tasks =[];
-    selectedDate =DateTime.now();
+
+  void resetData() {
+    tasks = [];
+    selectedDate = DateTime.now();
   }
 }

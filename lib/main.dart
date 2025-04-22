@@ -8,6 +8,7 @@ import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   // await FirebaseFirestore.instance.disableNetwork();
   runApp(MultiProvider(
     providers: [
@@ -18,4 +19,10 @@ Future<void> main() async {
     ],
     child: MyApp(),
   ));
+
+  await FirebaseFirestore.instance.disableNetwork();
+  runApp(ChangeNotifierProvider(
+      create: (context) => TasksProvider(),
+      child: const MyApp()));
+
 }

@@ -8,37 +8,32 @@ import 'package:todo_app_v2/core/utils/colors_manager.dart';
 import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
 import 'package:todo_app_v2/models/task_model.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
-
 import '../../../../auth/user_provider.dart';
 
 class TaskItem extends StatelessWidget {
-   TaskItem({super.key, required this.task});
+  TaskItem({super.key, required this.task});
 
   TaskModel task;
 
-
   @override
   Widget build(BuildContext context) {
-    String userId =Provider.of<UserProvider>(context,listen: false).currentUser!.id;
+    String userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     return Container(
-      margin: REdgeInsets.symmetric(vertical: 8,horizontal: 20),
+      margin: REdgeInsets.symmetric(vertical: 8, horizontal: 20),
       child: Slidable(
-       startActionPane:  ActionPane(
+        startActionPane: ActionPane(
           motion: const DrawerMotion(),
-          // A pane can dismiss the Slidable.
-          // dismissible: DismissiblePane(onDismissed: () {}),
-
-          children:  [
+          children: [
             SlidableAction(
-              onPressed: (context){
-                FirebaseFunction.deleteTaskFromFireStore(task.id,userId)
-                    .timeout(Duration(microseconds: 100),
+              onPressed: (context) {
+                FirebaseFunction.deleteTaskFromFireStore(task.id, userId)
+                    .timeout(
+                      Duration(microseconds: 100),
                       onTimeout: () {
-                        Provider.of<TasksProvider>(context,listen: false).getTasks(userId);
-
+                        Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
                       },
-                )
-                    .catchError((context){
+                    )
+                    .catchError((context) {
                   Fluttertoast.showToast(
                     msg: "Something wnt wrong",
                     toastLength: Toast.LENGTH_LONG,
@@ -61,9 +56,7 @@ class TaskItem extends StatelessWidget {
             ),
           ],
         ),
-
         child: Container(
-
           padding: REdgeInsets.all(20),
           decoration: BoxDecoration(
             color: ColorsManager.white,
@@ -80,10 +73,9 @@ class TaskItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(task.title,style: ApplightStyle.taskStyle,),
-                  SizedBox(height: 4.h,),
-                  Text(task.description,style: ApplightStyle.taskDescriptionStyle,),
-
+                  Text(task.title, style: ApplightStyle.taskStyle),
+                  SizedBox(height: 4.h),
+                  Text(task.description, style: ApplightStyle.taskDescriptionStyle),
                 ],
               ),
               Spacer(),
@@ -94,9 +86,8 @@ class TaskItem extends StatelessWidget {
                   color: ColorsManager.blue,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(Icons.check,color: ColorsManager.white,size: 32.sp,),
+                child: Icon(Icons.check, color: ColorsManager.white, size: 32.sp),
               ),
-
             ],
           ),
         ),
