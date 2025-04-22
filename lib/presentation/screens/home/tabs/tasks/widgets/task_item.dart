@@ -9,13 +9,17 @@ import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
 import 'package:todo_app_v2/models/task_model.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
 
+import '../../../../auth/user_provider.dart';
+
 class TaskItem extends StatelessWidget {
    TaskItem({super.key, required this.task});
 
   TaskModel task;
 
+
   @override
   Widget build(BuildContext context) {
+    String userId =Provider.of<UserProvider>(context,listen: false).currentUser!.id;
     return Container(
       margin: REdgeInsets.symmetric(vertical: 8,horizontal: 20),
       child: Slidable(
@@ -27,18 +31,19 @@ class TaskItem extends StatelessWidget {
           children:  [
             SlidableAction(
               onPressed: (context){
-                FirebaseFunction.deleteTaskFromFireStore(task.id)
+                FirebaseFunction.deleteTaskFromFireStore(task.id,userId)
                     .timeout(Duration(microseconds: 100),
                       onTimeout: () {
-                        Provider.of<TasksProvider>(context,listen: false).getTasks();
+                        Provider.of<TasksProvider>(context,listen: false).getTasks(userId);
+
                       },
                 )
                     .catchError((context){
                   Fluttertoast.showToast(
-                    msg: "Task added successfully",
+                    msg: "Something wnt wrong",
                     toastLength: Toast.LENGTH_LONG,
                     timeInSecForIosWeb: 5,
-                    backgroundColor: ColorsManager.blue,
+                    backgroundColor: ColorsManager.red,
                   );
                 });
               },

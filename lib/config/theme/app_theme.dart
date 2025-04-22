@@ -20,6 +20,11 @@ class AppTheme{
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(backgroundColor: ColorsManager.blue,)
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: ColorsManager.blue,
+      )
     )
   );
 
