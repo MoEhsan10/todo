@@ -19,4 +19,5 @@ class ApplightStyle{
   static TextStyle? hintTitle = GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w300, color: ColorsManager.black.withOpacity(0.7));
   static TextStyle? buttonTitle = GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600, color: ColorsManager.blue);
   static TextStyle? textButtonTitle = GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600, color: ColorsManager.white);
+  static TextStyle? taskDone = GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w700, color: ColorsManager.green);
 }

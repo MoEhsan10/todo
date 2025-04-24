@@ -7,38 +7,44 @@ import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
 import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
 import 'package:todo_app_v2/models/task_model.dart';
+import 'package:todo_app_v2/presentation/screens/edit/edit_screen.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
 
 import '../../../../auth/user_provider.dart';
 
-class TaskItem extends StatelessWidget {
-   TaskItem({super.key, required this.task});
+class TaskItem extends StatefulWidget {
+  TaskItem({super.key, required this.task});
 
   TaskModel task;
 
+  @override
+  State<TaskItem> createState() => _TaskItemState();
+}
 
+class _TaskItemState extends State<TaskItem> {
   @override
   Widget build(BuildContext context) {
-    String userId =Provider.of<UserProvider>(context,listen: false).currentUser!.id;
+    String userId =
+        Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     return Container(
-      margin: REdgeInsets.symmetric(vertical: 8,horizontal: 20),
+      margin: REdgeInsets.symmetric(vertical: 8, horizontal: 20),
       child: Slidable(
-       startActionPane:  ActionPane(
+        startActionPane: ActionPane(
           motion: const DrawerMotion(),
           // A pane can dismiss the Slidable.
           // dismissible: DismissiblePane(onDismissed: () {}),
 
-          children:  [
+          children: [
             SlidableAction(
-              onPressed: (context){
-                FirebaseFunction.deleteTaskFromFireStore(task.id,userId)
-                    .timeout(Duration(microseconds: 100),
-                      onTimeout: () {
-                        Provider.of<TasksProvider>(context,listen: false).getTasks(userId);
-
-                      },
-                )
-                    .catchError((context){
+              onPressed: (context) {
+                FirebaseFunction.deleteTaskFromFireStore(widget.task.id, userId)
+                    .timeout(
+                  Duration(microseconds: 100),
+                  onTimeout: () {
+                    Provider.of<TasksProvider>(context, listen: false)
+                        .getTasks(userId);
+                  },
+                ).catchError((context) {
                   Fluttertoast.showToast(
                     msg: "Something wnt wrong",
                     toastLength: Toast.LENGTH_LONG,
@@ -53,7 +59,9 @@ class TaskItem extends StatelessWidget {
               label: 'Delete',
             ),
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) {
+                Navigator.of(context).pushNamed(EditScreen.routeName,arguments: widget.task);
+              },
               backgroundColor: ColorsManager.blue,
               foregroundColor: Colors.white,
               icon: Icons.edit,
@@ -61,9 +69,7 @@ class TaskItem extends StatelessWidget {
             ),
           ],
         ),
-
         child: Container(
-
           padding: REdgeInsets.all(20),
           decoration: BoxDecoration(
             color: ColorsManager.white,
@@ -75,28 +81,55 @@ class TaskItem extends StatelessWidget {
                 width: 4.w,
                 height: 62.h,
                 margin: REdgeInsets.only(right: 14.sp),
-                color: ColorsManager.blue,
+                color:widget.task.isDone ? ColorsManager.green: ColorsManager.blue,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(task.title,style: ApplightStyle.taskStyle,),
-                  SizedBox(height: 4.h,),
-                  Text(task.description,style: ApplightStyle.taskDescriptionStyle,),
-
+                  Text(
+                    widget.task.title,
+                    style: widget.task.isDone
+                        ? ApplightStyle.taskStyle!.copyWith(color: ColorsManager.green)
+                        : ApplightStyle.taskStyle,
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  Text(
+                    widget.task.description,
+                    style: ApplightStyle.taskDescriptionStyle,
+                  ),
                 ],
               ),
-              Spacer(),
-              Container(
-                height: 34.h,
-                width: 69.w,
-                decoration: BoxDecoration(
-                  color: ColorsManager.blue,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(Icons.check,color: ColorsManager.white,size: 32.sp,),
-              ),
-
+              const Spacer(),
+              widget.task.isDone
+                  ? TextButton(
+                onPressed: () {
+                  Provider.of<TasksProvider>(context, listen: false)
+                      .toggleTaskStatus(widget.task, userId);
+                },
+                  child: Text(    'Done!',
+                      style: ApplightStyle.taskDone,
+                    ))
+                  : InkWell(
+                      onTap: () {
+                        Provider.of<TasksProvider>(context, listen: false)
+                            .toggleTaskStatus(widget.task, userId);
+                      },
+                      child: Container(
+                        height: 34.h,
+                        width: 69.w,
+                        decoration: BoxDecoration(
+                          color: ColorsManager.blue,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.check,
+                          color: ColorsManager.white,
+                          size: 32.sp,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),

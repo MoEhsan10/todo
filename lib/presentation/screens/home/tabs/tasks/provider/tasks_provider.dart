@@ -25,4 +25,12 @@ class TasksProvider extends ChangeNotifier {
     tasks =[];
     selectedDate =DateTime.now();
   }
+
+  void toggleTaskStatus(TaskModel task, String userId) async {
+    task.isDone = !task.isDone;
+    await FirebaseFunction.updateTaskStatus(task,userId);
+    notifyListeners();
+  }
+
+
 }
