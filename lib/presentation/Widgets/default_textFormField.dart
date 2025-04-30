@@ -8,13 +8,17 @@ class DefaultTextFormField extends StatefulWidget {
     this.validator,
     this.keyboardType = TextInputType.text,
     this.isPassword = false,
+    this.hintStyle,
+    this.style,
   });
 
   TextEditingController controller;
   String hintText;
+  TextStyle? hintStyle;
   String? Function(String?)? validator;
   TextInputType keyboardType;
   bool isPassword;
+  TextStyle? style;
 
   @override
   State<DefaultTextFormField> createState() => _DefaultTextFormFieldState();
@@ -28,8 +32,10 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         keyboardType: widget.keyboardType,
         controller: widget.controller,
+        style: widget.style,
         decoration: InputDecoration(
           hintText: widget.hintText,
+          hintStyle: widget.hintStyle,
           suffixIcon: widget.isPassword
               ? IconButton(
                   onPressed: () {

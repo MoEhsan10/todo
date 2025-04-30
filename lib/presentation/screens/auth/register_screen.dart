@@ -5,13 +5,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
 import 'package:todo_app_v2/presentation/screens/auth/login_screen.dart';
-import 'package:todo_app_v2/presentation/screens/auth/user_provider.dart';
+import 'package:todo_app_v2/presentation/screens/auth/provider/user_provider.dart';
 import 'package:todo_app_v2/presentation/screens/home/home_screen.dart';
 
+import '../../../core/utils/app_dark_styles.dart';
+import '../../../core/utils/app_light_Styles.dart';
 import '../../../core/utils/colors_manager.dart';
+import '../../../providers/theme_provider.dart';
 import '../../Widgets/default_elevated_button.dart';
 import '../../Widgets/default_textFormField.dart';
-import 'email_validator.dart';
+import 'widget/email_validator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -32,9 +36,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    final isLight = themeProvider.isLightTheme();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
+        title: Text(AppLocalizations.of(context)!.register,
+          style: isLight ? ApplightStyle.loginRegister : AppDarkStyles.loginRegister,
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -47,7 +55,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               DefaultTextFormField(
                 controller: fullNameController,
-                hintText: 'Full Name',
+                hintText: AppLocalizations.of(context)!.fullName,
+                hintStyle: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : ApplightStyle.hintStyle,
+                style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                 keyboardType: TextInputType.name,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
@@ -59,7 +69,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 16.h),
               DefaultTextFormField(
                 controller: userNameController,
-                hintText: 'User name',
+                hintText: AppLocalizations.of(context)!.userName,
+                hintStyle: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : ApplightStyle.hintStyle,
+                style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                 keyboardType: TextInputType.name,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
@@ -71,7 +83,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 16.h),
               DefaultTextFormField(
                 controller: emailController,
-                hintText: 'Email',
+                hintText: AppLocalizations.of(context)!.email,
+                hintStyle: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : ApplightStyle.hintStyle,
+                style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                 keyboardType: TextInputType.emailAddress,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
@@ -86,7 +100,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 16.h),
               DefaultTextFormField(
                 controller: passwordController,
-                hintText: 'Password',
+                hintText: AppLocalizations.of(context)!.password,
+                hintStyle: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : ApplightStyle.hintStyle,
+                style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                 isPassword: true,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
@@ -98,7 +114,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 16.h),
               DefaultTextFormField(
                 controller: rePasswordController,
-                hintText: 're-Password',
+                hintText: AppLocalizations.of(context)!.password,
+                hintStyle: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : ApplightStyle.hintStyle,
+                style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                 isPassword: true,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
@@ -111,14 +129,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               SizedBox(height: 32.h),
-              DefaultElevatedButton(onPressed: register, label: 'Register'),
+              DefaultElevatedButton(onPressed: register, label: AppLocalizations.of(context)!.register),
               SizedBox(height: 8.h),
               TextButton(
                   onPressed: () {
                     Navigator.of(context)
                         .pushReplacementNamed(LoginScreen.routeName);
                   },
-                  child: const Text("Already have an account?")),
+                  child: Text(AppLocalizations.of(context)!.haveAccount,)),
             ],
           ),
         ),

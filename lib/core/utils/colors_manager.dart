@@ -9,4 +9,5 @@ static const Color white =Color(0xFFFFFFFF);
 static const Color grey =Color(0xFFC8C9CB);
 static const Color green =Color(0xFF61E757);
 static const Color red =Color(0xFFEC4B4B);
+static const Color darkBLue =Color(0xFF141922);
 }

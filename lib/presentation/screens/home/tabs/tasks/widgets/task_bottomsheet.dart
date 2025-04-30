@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_v2/core/utils/app_dark_styles.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
 import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
@@ -10,8 +11,11 @@ import 'package:todo_app_v2/models/task_model.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_elevated_button.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_textFormField.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../auth/user_provider.dart';
+import '../../../../../../providers/theme_provider.dart';
+import '../../../../auth/provider/user_provider.dart';
 
 class TaskBottomSheet extends StatefulWidget {
   const TaskBottomSheet({super.key});
@@ -27,8 +31,13 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   DateTime selectedDate= DateTime.now();
   var formKey=GlobalKey<FormState>();
 
+
+
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    final isLight = themeProvider.isLightTheme();
+    final localizations = AppLocalizations.of(context)!;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -36,7 +45,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
         height: MediaQuery.sizeOf(context).height*0.5,
         padding: REdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: ColorsManager.white,
+          color: isLight ? ColorsManager.white :ColorsManager.darkBLue,
           borderRadius: BorderRadius.horizontal(left: Radius.circular(15),right: Radius.circular(15)),
         ),
         child: Form(
@@ -44,11 +53,12 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text('Add new task',style: ApplightStyle.bottomSheetTitle,),
+                Text(localizations.addNewTask,style:isLight ? ApplightStyle.bottomSheetTitle : AppDarkStyles.bottomSheetTitle,),
                 SizedBox(height: 16.h,),
                 DefaultTextFormField(
                     controller: titleController,
-                    hintText: 'Enter task title',
+                    hintText: localizations.enterTaskTitle,
+                    hintStyle: isLight ? ApplightStyle.hintStyle : AppDarkStyles.hintStyle,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Title can not be empty';
@@ -58,8 +68,9 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                 ),
                 DefaultTextFormField(
                     controller: descriptionController,
-                    hintText: 'Enter task description',
-                    validator: (value) {
+                    hintText: localizations.enterTaskDesc,
+                  hintStyle: isLight ? ApplightStyle.hintStyle : AppDarkStyles.hintStyle,
+                  validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Description can not be empty';
                       }
@@ -67,7 +78,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                     },
                 ),
                 SizedBox(height: 16.h,),
-                Text('Select date',style: ApplightStyle.dateLabelStyle,),
+                Text(localizations.selectedDate,style: isLight ? ApplightStyle.dateLabelStyle : AppDarkStyles.dateLabelStyle,),
                 SizedBox(height: 8.h,),
                 InkWell(
                   onTap: ()async {
@@ -89,7 +100,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                     onPressed: () {
                         if(formKey.currentState!.validate()){addTask();}
                       },
-                    label: 'Add'),
+                    label: localizations.add),
               ],
             ),
           ),

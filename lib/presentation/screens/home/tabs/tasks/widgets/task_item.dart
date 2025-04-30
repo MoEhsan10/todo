@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_v2/core/utils/app_dark_styles.dart';
 import 'package:todo_app_v2/core/utils/app_light_Styles.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
 import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
@@ -10,7 +11,8 @@ import 'package:todo_app_v2/models/task_model.dart';
 import 'package:todo_app_v2/presentation/screens/edit/edit_screen.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
 
-import '../../../../auth/user_provider.dart';
+import '../../../../../../providers/theme_provider.dart';
+import '../../../../auth/provider/user_provider.dart';
 
 class TaskItem extends StatefulWidget {
   TaskItem({super.key, required this.task});
@@ -26,6 +28,9 @@ class _TaskItemState extends State<TaskItem> {
   Widget build(BuildContext context) {
     String userId =
         Provider.of<UserProvider>(context, listen: false).currentUser!.id;
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    final isLight = themeProvider.isLightTheme();
+
     return Container(
       margin: REdgeInsets.symmetric(vertical: 8, horizontal: 20),
       child: Slidable(
@@ -72,7 +77,7 @@ class _TaskItemState extends State<TaskItem> {
         child: Container(
           padding: REdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: ColorsManager.white,
+            color: isLight ? ColorsManager.white : ColorsManager.darkBLue,
             borderRadius: BorderRadius.circular(15.sp),
           ),
           child: Row(
@@ -97,7 +102,7 @@ class _TaskItemState extends State<TaskItem> {
                   ),
                   Text(
                     widget.task.description,
-                    style: ApplightStyle.taskDescriptionStyle,
+                    style: isLight ? ApplightStyle.taskDescriptionStyle : AppDarkStyles.taskDescriptionStyle,
                   ),
                 ],
               ),
@@ -108,7 +113,7 @@ class _TaskItemState extends State<TaskItem> {
                   Provider.of<TasksProvider>(context, listen: false)
                       .toggleTaskStatus(widget.task, userId);
                 },
-                  child: Text(    'Done!',
+                  child: Text('Done!',
                       style: ApplightStyle.taskDone,
                     ))
                   : InkWell(
