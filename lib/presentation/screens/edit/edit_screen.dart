@@ -5,14 +5,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_v2/core/utils/app_dark_styles.dart';
 
 import '../../../core/utils/app_light_Styles.dart';
 import '../../../core/utils/colors_manager.dart';
 import '../../../firebase_functions/firebase_function.dart';
 import '../../../models/task_model.dart';
+import '../../../providers/theme_provider.dart';
 import '../../Widgets/default_elevated_button.dart';
 import '../../Widgets/default_textFormField.dart';
-import '../auth/user_provider.dart';
+import '../auth/provider/user_provider.dart';
 import '../home/tabs/tasks/provider/tasks_provider.dart';
 
 class EditScreen extends StatefulWidget {
@@ -38,9 +40,11 @@ class _EditScreenState extends State<EditScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.sizeOf(context).height;
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    final isLight = themeProvider.isLightTheme();
     if(task == null){
       task= ModalRoute.of(context)!.settings.arguments as TaskModel;
-      DateTime selectedDate= task!.date;
+       selectedDate= task!.date;
       titleController.text = task!.title;
       descriptionController.text = task!.description;
     }
@@ -58,7 +62,7 @@ class _EditScreenState extends State<EditScreen> {
       body: Stack(
         children: [
           Container(
-            color: Theme.of(context).primaryColor,
+            color: ColorsManager.blue,
             height: screenHeight*0.1,
           ),
           Container(
@@ -66,7 +70,7 @@ class _EditScreenState extends State<EditScreen> {
             margin: REdgeInsets.symmetric(horizontal: 32,vertical: 20),
             padding: REdgeInsets.all(35),
             decoration: BoxDecoration(
-              color: ColorsManager.white,
+              color:themeProvider.isLightTheme()? ColorsManager.white :ColorsManager.darkBLue,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Form(
@@ -74,12 +78,13 @@ class _EditScreenState extends State<EditScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text('Edit task',style: ApplightStyle.bottomSheetTitle,),
+                    Text(AppLocalizations.of(context)!.editTask,style:themeProvider.isLightTheme()? ApplightStyle.bottomSheetTitle :AppDarkStyles.bottomSheetTitle,),
                     SizedBox(height: 52.h,),
 
                     DefaultTextFormField(
                       controller: titleController,
-                      hintText: 'Enter task title',
+                      hintText: AppLocalizations.of(context)!.enterTaskTitle,
+                      style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Title can not be empty';
@@ -91,7 +96,8 @@ class _EditScreenState extends State<EditScreen> {
 
                     DefaultTextFormField(
                       controller: descriptionController,
-                      hintText: 'Enter task description',
+                      hintText: AppLocalizations.of(context)!.enterTaskDesc,
+                      style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Description can not be empty';
@@ -100,7 +106,7 @@ class _EditScreenState extends State<EditScreen> {
                       },
                     ),
                     SizedBox(height: 33.h,),
-                    Text('Select date',style: ApplightStyle.dateLabelStyle,),
+                    Text(AppLocalizations.of(context)!.selectedDate,style: themeProvider.isLightTheme()? ApplightStyle.dateLabelStyle :AppDarkStyles.dateLabelStyle,),
                     SizedBox(height: 8.h,),
                     InkWell(
                         onTap: ()async {
@@ -122,7 +128,8 @@ class _EditScreenState extends State<EditScreen> {
                         onPressed: () {
                           if(formKey.currentState!.validate()){updateTask();}
                         },
-                        label: 'Save changes'),
+                        label: AppLocalizations.of(context)!.saveChanges),
+
                   ],
                 ),
               ),

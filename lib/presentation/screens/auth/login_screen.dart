@@ -7,11 +7,14 @@ import 'package:todo_app_v2/firebase_functions/firebase_function.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_elevated_button.dart';
 import 'package:todo_app_v2/presentation/Widgets/default_textFormField.dart';
 import 'package:todo_app_v2/presentation/screens/auth/register_screen.dart';
-import 'package:todo_app_v2/presentation/screens/auth/user_provider.dart';
-
+import 'package:todo_app_v2/presentation/screens/auth/provider/user_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../core/utils/app_dark_styles.dart';
+import '../../../core/utils/app_light_Styles.dart';
 import '../../../core/utils/colors_manager.dart';
+import '../../../providers/theme_provider.dart';
 import '../home/home_screen.dart';
-import 'email_validator.dart';
+import 'widget/email_validator.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -30,9 +33,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    final isLight = themeProvider.isLightTheme();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(AppLocalizations.of(context)!.login,
+          style: isLight ? ApplightStyle.loginRegister : AppDarkStyles.loginRegister,
+            ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -45,8 +52,10 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               DefaultTextFormField(
                 controller: emailController,
-                hintText: 'Email',
+                hintText: AppLocalizations.of(context)!.email,
+                hintStyle: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : ApplightStyle.hintStyle,
                 keyboardType: TextInputType.emailAddress,
+                style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
                     return 'Please, Enter your email address';
@@ -60,7 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 16.h),
               DefaultTextFormField(
                 controller: passwordController,
-                hintText: 'Password',
+                hintText: AppLocalizations.of(context)!.password,
+                hintStyle: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : ApplightStyle.hintStyle,
+                style: isLight ? ApplightStyle.hintStyle!.copyWith(color: Colors.black) : AppDarkStyles.hintStyle,
                 isPassword: true,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
@@ -70,14 +81,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               SizedBox(height: 32.h),
-              DefaultElevatedButton(onPressed: login, label: 'Login'),
+              DefaultElevatedButton(onPressed: login, label: AppLocalizations.of(context)!.login),
               SizedBox(height: 8.h),
               TextButton(
                   onPressed: () {
                     Navigator.of(context)
                         .pushReplacementNamed(RegisterScreen.routeName);
                   },
-                  child: Text("Don't have an account?")),
+                  child: Text(AppLocalizations.of(context)!.doNotHaveAccount)),
             ],
           ),
         ),

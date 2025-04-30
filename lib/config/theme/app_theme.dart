@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_v2/core/utils/colors_manager.dart';
 
 class AppTheme{
-  static ThemeData light =ThemeData(
+  static ThemeData light =  ThemeData(
     primaryColor: ColorsManager.blue,
     scaffoldBackgroundColor: ColorsManager.bgLight,
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme:const BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
       backgroundColor:ColorsManager.white,
       selectedItemColor: ColorsManager.blue,
@@ -13,7 +13,7 @@ class AppTheme{
       showSelectedLabels: false,
       showUnselectedLabels: false,
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme:const FloatingActionButtonThemeData(
       backgroundColor: ColorsManager.blue,
       foregroundColor: ColorsManager.white,
       shape: CircleBorder(side: BorderSide(width: 4,color: ColorsManager.white)),
@@ -27,8 +27,33 @@ class AppTheme{
       )
     )
   );
+  static ThemeData dark =  ThemeData(
+    primaryColor: ColorsManager.bgDark,
+    scaffoldBackgroundColor: ColorsManager.bgDark,
+    bottomNavigationBarTheme:const BottomNavigationBarThemeData(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor:ColorsManager.darkBLue,
+      selectedItemColor: ColorsManager.blue,
+      unselectedItemColor: ColorsManager.white,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+    ),
+    floatingActionButtonTheme:const FloatingActionButtonThemeData(
+      backgroundColor: ColorsManager.blue,
+      foregroundColor: ColorsManager.white,
+      shape: CircleBorder(side: BorderSide(width: 4,color: ColorsManager.darkBLue)),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(backgroundColor: ColorsManager.blue,)
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: ColorsManager.blue,
+      )
+    )
+  );
 
 
 
-  static ThemeData dark =ThemeData();
+
 }

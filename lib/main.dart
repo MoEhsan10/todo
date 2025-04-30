@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app_v2/my_app.dart';
-import 'package:todo_app_v2/presentation/screens/auth/user_provider.dart';
+import 'package:todo_app_v2/presentation/screens/auth/provider/user_provider.dart';
 import 'package:todo_app_v2/presentation/screens/home/tabs/tasks/provider/tasks_provider.dart';
+import 'package:todo_app_v2/providers/language_provider.dart';
+import 'package:todo_app_v2/providers/theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +17,12 @@ Future<void> main() async {
         create: (context) => TasksProvider(),
       ),
       ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => LanguageProvider(),
+      )
     ],
     child: MyApp(),
   ));
