@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPassword: true,
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
-                    return 'Please, Enter your password';
+                    return 'Please, Enter your password!';
                   }
                   return null;
                 },
